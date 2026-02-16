@@ -10,9 +10,13 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: python -m pip install --upgrade pip
-  displayName: 'Install pip'
-- script: pip install -r requirements.txt
-  displayName: 'Installing Requirements'
-- script: pytest -v -s
-  displayName: 'Running Tests'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+  displayName: 'Install dependencies'
+
+- script: |
+    pip install pytest pytest-azurepipelines
+    pytest
+  displayName: 'Run tests'
