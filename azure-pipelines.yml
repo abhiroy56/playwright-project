@@ -23,11 +23,11 @@ steps:
   condition: succeededOrFailed()
   
 - script: |
-    echo "Current directory:"
-    pwd
-    echo "Finding XML files:"
-    find . -name "*.xml"
-  displayName: "Debug: locate test result XML"
+    echo Current directory:
+    cd
+    echo Finding XML files:
+    dir /s *.xml
+  displayName: "Debug: locate test result XML (Windows)"
   condition: succeededOrFailed()
   
 - task: PublishTestResults@2
