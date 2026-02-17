@@ -27,7 +27,7 @@ steps:
   inputs:
     searchFolder: 'test-results'
     testResultsFormat: 'JUnit'
-    testResultsFiles: '**/e2e-result.xml'
+    testResultsFiles: '**/reports/e2e-result.xml'
     mergeTestResults: true
     testRunTitle: 'Playwright Test Result'
   condition: succeededOrFailed()
