@@ -28,6 +28,7 @@ steps:
     echo "Finding XML files:"
     find . -name "*.xml"
   displayName: "Debug: locate test result XML"
+  condition: succeededOrFailed()
   
 - task: PublishTestResults@2
   displayName: 'Publish test results'
