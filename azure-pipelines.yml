@@ -15,5 +15,6 @@ steps:
 
 - script: |
     pip install -r requirements.txt
-    pytest --junitxml="./reports/result.xml" 
+    pytest --junitxml="./reports/e2e-result.xml" 
   displayName: 'Run a multi-line script'
+  condition: succeededOrFailed()
