@@ -20,3 +20,9 @@ class TestDemo:
         :return:
         """
         assert False
+    def test_fail2(self):
+        """
+        test method to with Fail
+        :return:
+        """
+        assert False
