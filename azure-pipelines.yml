@@ -15,5 +15,5 @@ steps:
 
 - script: |
     pip install -r requirements.txt
-    pytest tests/ -v -s
+    pytest --junitxml="./reports/result.xml" 
   displayName: 'Run a multi-line script'
