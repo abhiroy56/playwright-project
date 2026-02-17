@@ -19,23 +19,14 @@ steps:
   condition: succeededOrFailed()
 
 - script: pytest --junitxml="./reports/e2e-result.xml"
-  displayName: 'Publishing Result'
-  condition: succeededOrFailed()
-  
-- script: |
-    echo Current directory:
-    cd
-    echo Finding XML files:
-    dir /s *.xml
-  displayName: "Debug: locate test result XML (Windows)"
+  displayName: 'Running Tests'
   condition: succeededOrFailed()
   
 - task: PublishTestResults@2
   displayName: 'Publish test results'
   inputs:
-    searchFolder: 'test-results'
+    testResultsFiles: 'reports/e2e-result.xml'
     testResultsFormat: 'JUnit'
-    testResultsFiles: '**/reports/e2e-result.xml'
-    mergeTestResults: true
-    testRunTitle: 'Playwright Test Result'
+    testRunTitle: 'Publish Playwright Pytest Results'
+    failTaskOnFailedTests: true
   condition: succeededOrFailed()
