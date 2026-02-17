@@ -15,6 +15,19 @@ steps:
 
 - script: |
     pip install -r requirements.txt
-    pytest --junitxml="./reports/e2e-result.xml" 
   displayName: 'Run a multi-line script'
+  condition: succeededOrFailed()
+
+- script: pytest --junitxml="./reports/e2e-result.xml"
+  displayName: 'Publishing Result'
+  condition: succeededOrFailed()
+  
+- task: PublishTestResults@2
+  displayName: 'Publish test results'
+  inputs:
+    searchFolder: 'test-results'
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/e2e-result*.xml'
+    mergeTestResults: true
+    testRunTitle: 'Playwright Test Result'
   condition: succeededOrFailed()
