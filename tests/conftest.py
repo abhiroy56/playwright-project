@@ -1,9 +1,8 @@
 """
 Test Demo Module
 """
-
-import pytest
 import os
+import pytest
 from playwright.sync_api import sync_playwright, Playwright
 
 
