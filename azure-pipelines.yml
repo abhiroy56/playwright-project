@@ -28,7 +28,7 @@ steps:
   displayName: 'Installing Requirements'
   condition: succeededOrFailed()
 
-- script: pytest --browser ${{ parameters.browser }} --junitxml="./reports/e2e-result.xml"
+- script: pytest --headless --browser ${{ parameters.browser }} --junitxml="./reports/e2e-result.xml"
   displayName: 'Running Tests'
   condition: succeededOrFailed()
   
