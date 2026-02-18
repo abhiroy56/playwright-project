@@ -35,8 +35,8 @@ def pytest_addoption(parser):
     """
     parser.addoption("--env", action="store", default="qa",
                      help="Set the test environment (default: qa).")
-    parser.addoption("--headless", action="store_true", default=True,
-                     help="Run browser in headless mode (default: True).")
+    parser.addoption("--headless", action="store_true", default=False,
+                     help="Run browser in headless mode (default: False).")
 
 
 @pytest.fixture(scope="session")
@@ -72,6 +72,7 @@ def browser(browser_type, request):
     """
     headless = request.config.getoption("--headless")
     browser_pw = browser_type.launch(headless=headless, args=["--start-maximized"])
+    print("Starting browser...")
     yield browser_pw
     browser_pw.close()
 
@@ -84,7 +85,7 @@ def browser_context(browser):
     :param browser: The browser instance.
     :yield: The browser context.
     """
-    context = browser.new_context()
+    context = browser.new_context(no_viewport=True)
     yield context
     context.close()
 
