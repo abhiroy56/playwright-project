@@ -1,6 +1,10 @@
 """
 Test Demo Module
 """
+import logging
+import os
+
+import pytest
 from playwright.sync_api import Page
 
 
@@ -15,6 +19,8 @@ class TestDemo:
         :return:
         """
         page.goto("https://www.letcode.in/")
+        print("Login with username", os.environ.get("test_username"))
+        print("Login with password", os.environ.get("test_password"))
         assert True
 
     def test_fail(self, page: Page):
@@ -31,3 +37,12 @@ class TestDemo:
         """
         page.goto("https://www.letcode.in/")
         assert False
+
+    @pytest.mark.prod_only
+    def test_fail3(self, page: Page):
+        """
+        test method to with Fail
+        :return:
+        """
+        page.goto("https://www.letcode.in/")
+        assert True

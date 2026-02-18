@@ -1,9 +1,13 @@
 """
 Test Demo Module
 """
+import logging
+from datetime import datetime
 
 import pytest
 import os
+
+from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright, Playwright
 
 
@@ -72,7 +76,6 @@ def browser(browser_type, request):
     """
     headless = request.config.getoption("--headless")
     browser_pw = browser_type.launch(headless=headless, args=["--start-maximized"])
-    print("Starting browser...")
     yield browser_pw
     browser_pw.close()
 
@@ -100,3 +103,64 @@ def page(browser_context):
     pw_page = browser_context.new_page()
     yield pw_page
     pw_page.close()
+
+
+####################################### Invokes before Test Sesssion Starts #######################################
+
+def pytest_sessionstart(session):
+    """
+    Pytest hook that runs before the test session starts.
+    :param request: The pytest request object.
+    e.g. DB connections, API clients, etc. can be initialized here.
+    """
+    load_dotenv()
+    env = session.config.getoption("--env")
+    print(f"🌍 Environment: {env}")
+    headless = session.config.getoption("--headless")
+    print(f"🌍 Headless Status: {headless}")
+    print("Test session is starting...")
+
+####################################### Invokes before Each Test Starts #######################################
+
+def pytest_runtest_setup(item):
+    """
+    Pytest hook that runs before each test starts.
+    :param request: The pytest request object.
+    e.g. Test data setup, environment configuration, etc. can be done here.
+    """
+    # env = item.config.getoption("--env")
+    if "prod_only" in item.keywords:         #and env != "prod":
+        pytest.skip(f"Skipping {item.name} because it is marked as prod_only.")
+    print(f"Setting up for test: {item.name}")
+
+
+####################################### Invokes When Test is running #######################################
+def pytest_runtest_call(item):
+    """
+    Pytest hook that runs when the test is being executed.
+    :param request: The pytest request object.
+    e.g. Actions that need to be performed during the test execution can be done here.
+    """
+    print(f"Running test: {item.name}","started at", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+
+####################################### Invokes After Each Test Starts #######################################
+def pytest_runtest_teardown(item, nextitem):
+    """
+    Pytest hook that runs after each test finishes.
+    :param request: The pytest request object.
+    e.g. Cleanup actions, resetting states, etc. can be done here.
+    """
+    print(f"⬅️ Finished: {item.nodeid}")
+
+    if nextitem:
+        print(f"➡️ Next up: {nextitem.nodeid}")
+    else:
+        print("🏁 That was the last test")
+
+####################################### Invokes after Test Sesssion Starts #######################################
+
+def pytest_sessionfinish(session, exitstatus):
+    """Pytest hook that runs after the test session finishes."""
+    print("Session finished")
+    print("Exit status:", exitstatus)
