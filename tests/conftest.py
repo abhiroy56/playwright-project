@@ -105,7 +105,7 @@ def page(browser_context):
     pw_page.close()
 
 
-####################################### Invokes before Test Sesssion Starts #######################################
+################ Invokes before Test Sesssion Starts ##############
 
 def pytest_sessionstart(session):
     """
@@ -120,7 +120,7 @@ def pytest_sessionstart(session):
     print(f"🌍 Headless Status: {headless}")
     print("Test session is starting...")
 
-####################################### Invokes before Each Test Starts #######################################
+################## Invokes before Each Test Starts ################
 
 def pytest_runtest_setup(item):
     """
@@ -134,17 +134,19 @@ def pytest_runtest_setup(item):
     print(f"Setting up for test: {item.name}")
 
 
-####################################### Invokes When Test is running #######################################
+################# Invokes When Test is running #############
 def pytest_runtest_call(item):
     """
     Pytest hook that runs when the test is being executed.
     :param request: The pytest request object.
-    e.g. Actions that need to be performed during the test execution can be done here.
+    e.g. Actions that need to be performed during the
+    test execution can be done here.
     """
-    print(f"Running test: {item.name}","started at", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    print(f"Running test: {item.name}","started at",
+          datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 
-####################################### Invokes After Each Test Starts #######################################
+################### Invokes After Each Test Starts ##############
 def pytest_runtest_teardown(item, nextitem):
     """
     Pytest hook that runs after each test finishes.
@@ -158,7 +160,7 @@ def pytest_runtest_teardown(item, nextitem):
     else:
         print("🏁 That was the last test")
 
-####################################### Invokes after Test Sesssion Starts #######################################
+################### Invokes after Test Sesssion Starts ###################
 
 def pytest_sessionfinish(session, exitstatus):
     """Pytest hook that runs after the test session finishes."""
