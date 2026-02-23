@@ -1,10 +1,11 @@
 """
 Test Demo Module
 """
+
 import os
 import pytest
 from playwright.sync_api import sync_playwright, Playwright
-
+from utlilities.yaml_parser import ConfigParser
 
 
 @pytest.hookimpl(hookwrapper=True)
@@ -36,8 +37,6 @@ def pytest_addoption(parser):
                      help="Set the test environment (default: qa).")
     parser.addoption("--headless", action="store_true", default=False,
                      help="Run browser in headless mode (default: False).")
-    parser.addoption("--browsername", action="store", default="chromium",
-                     help="Set Browser Type.")
 
 @pytest.fixture(scope="session")
 def playwright():
@@ -50,7 +49,7 @@ def playwright():
     playwright_pw.stop()
 
 @pytest.fixture(scope="session")
-def browser_type(playwright: Playwright, browser_name, request):
+def browser_type(playwright: Playwright, browser_name):
     """
     Provides the browser type (e.g., chromium, firefox, webkit).
 
@@ -58,17 +57,12 @@ def browser_type(playwright: Playwright, browser_name, request):
     :param browser_name: The name of the browser to use.
     :return: The browser type object.
     """
-    browsernname = request.config.getoption("--browsername")
-    if browsernname:
-        yield getattr(playwright, browsernname)
-    else:
-        yield getattr(playwright, browser_name)
+    yield getattr(playwright, browser_name)
 
 @pytest.fixture(scope="session")
 def browser(browser_type, request):
     """
     Provides a browser instance for the test session.
-
     :param browser_type: The browser type object.
     :param request: The pytest request object.
     :yield: The browser instance.
@@ -103,3 +97,25 @@ def page(browser_context):
     pw_page = browser_context.new_page()
     yield pw_page
     pw_page.close()
+
+
+@pytest.fixture
+def getenv(request):
+    """
+    Provides the test environment based on command-line options.
+
+    :param request: The pytest request object.
+    :yield: The test environment (e.g., qa, staging, prod).
+    """
+    env = request.config.getoption("--env")
+    yield env
+
+@pytest.fixture
+def get_url(getenv):
+    """
+    Provides the base URL for the tests based on the test environment.
+    :param testenv:
+    :return:
+    """
+    testenv_variables:dict = ConfigParser.load_config("config.yaml", getenv)
+    yield testenv_variables["baseURL"]
