@@ -1,11 +1,10 @@
 """
 Test Demo Module
 """
+
 import os
 import pytest
-import yaml
 from playwright.sync_api import sync_playwright, Playwright
-
 from utlilities.yaml_parser import ConfigParser
 
 
@@ -50,7 +49,7 @@ def playwright():
     playwright_pw.stop()
 
 @pytest.fixture(scope="session")
-def browser_type(playwright: Playwright, browser_name, request):
+def browser_type(playwright: Playwright, browser_name):
     """
     Provides the browser type (e.g., chromium, firefox, webkit).
 
@@ -101,7 +100,7 @@ def page(browser_context):
 
 
 @pytest.fixture
-def testenv(request):
+def getenv(request):
     """
     Provides the test environment based on command-line options.
 
@@ -112,11 +111,11 @@ def testenv(request):
     yield env
 
 @pytest.fixture
-def test_url(testenv):
+def get_url(getenv):
     """
     Provides the base URL for the tests based on the test environment.
     :param testenv:
     :return:
     """
-    testenv_variables = ConfigParser("config.yaml", testenv)
+    testenv_variables = ConfigParser("config.yaml", getenv)
     yield testenv_variables["baseURL"]
