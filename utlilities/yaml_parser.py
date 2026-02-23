@@ -14,6 +14,7 @@ class ConfigParser:
 
     @staticmethod
     def load_config(yaml_file, env) -> dict:
+        """Loads the configuration for a specific environment from a YAML file."""
         with open(CONFIGFILE_PATH.joinpath(yaml_file),encoding="utf-8",) as file:
             config = yaml.safe_load(file)
         env_config = config.get(env)
