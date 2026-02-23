@@ -3,8 +3,10 @@ Test Demo Module
 """
 import os
 import pytest
+import yaml
 from playwright.sync_api import sync_playwright, Playwright
 
+from utlilities.yaml_parser import ConfigParser
 
 
 @pytest.hookimpl(hookwrapper=True)
@@ -36,8 +38,6 @@ def pytest_addoption(parser):
                      help="Set the test environment (default: qa).")
     parser.addoption("--headless", action="store_true", default=False,
                      help="Run browser in headless mode (default: False).")
-    parser.addoption("--browsername", action="store", default="chromium",
-                     help="Set Browser Type.")
 
 @pytest.fixture(scope="session")
 def playwright():
@@ -58,11 +58,7 @@ def browser_type(playwright: Playwright, browser_name, request):
     :param browser_name: The name of the browser to use.
     :return: The browser type object.
     """
-    browsernname = request.config.getoption("--browsername")
-    if browsernname:
-        yield getattr(playwright, browsernname)
-    else:
-        yield getattr(playwright, browser_name)
+    yield getattr(playwright, browser_name)
 
 @pytest.fixture(scope="session")
 def browser(browser_type, request):
@@ -103,3 +99,25 @@ def page(browser_context):
     pw_page = browser_context.new_page()
     yield pw_page
     pw_page.close()
+
+
+@pytest.fixture
+def testenv(request):
+    """
+    Provides the test environment based on command-line options.
+
+    :param request: The pytest request object.
+    :yield: The test environment (e.g., qa, staging, prod).
+    """
+    env = request.config.getoption("--env")
+    yield env
+
+@pytest.fixture
+def test_url(testenv):
+    """
+    Provides the base URL for the tests based on the test environment.
+    :param testenv:
+    :return:
+    """
+    testenv_variables = ConfigParser("config.yaml", testenv)
+    yield testenv_variables["baseURL"]
