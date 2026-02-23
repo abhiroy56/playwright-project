@@ -117,5 +117,5 @@ def get_url(getenv):
     :param testenv:
     :return:
     """
-    testenv_variables = ConfigParser("config.yaml", getenv)
+    testenv_variables:dict = ConfigParser.load_config("config.yaml", getenv)
     yield testenv_variables["baseURL"]
