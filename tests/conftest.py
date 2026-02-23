@@ -64,7 +64,6 @@ def browser_type(playwright: Playwright, browser_name, request):
 def browser(browser_type, request):
     """
     Provides a browser instance for the test session.
-
     :param browser_type: The browser type object.
     :param request: The pytest request object.
     :yield: The browser instance.
