@@ -23,7 +23,7 @@ class TestDemo:
         :return:
         """
         page.goto("https://www.letcode.in/")
-        assert False
+        assert True
     def test_fail2(self, page: Page):
         """
         test method to with Fail

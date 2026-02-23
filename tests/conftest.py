@@ -36,7 +36,8 @@ def pytest_addoption(parser):
                      help="Set the test environment (default: qa).")
     parser.addoption("--headless", action="store_true", default=False,
                      help="Run browser in headless mode (default: False).")
-
+    parser.addoption("--browsername", action="store", default="chromium",
+                     help="Set Browser Type.")
 
 @pytest.fixture(scope="session")
 def playwright():
@@ -49,7 +50,7 @@ def playwright():
     playwright_pw.stop()
 
 @pytest.fixture(scope="session")
-def browser_type(playwright: Playwright, browser_name):
+def browser_type(playwright: Playwright, browser_name, request):
     """
     Provides the browser type (e.g., chromium, firefox, webkit).
 
@@ -57,8 +58,11 @@ def browser_type(playwright: Playwright, browser_name):
     :param browser_name: The name of the browser to use.
     :return: The browser type object.
     """
-    return getattr(playwright, browser_name)
-
+    browsernname = request.config.getoption("--browsername")
+    if browsernname:
+        yield getattr(playwright, browsernname)
+    else:
+        yield getattr(playwright, browser_name)
 
 @pytest.fixture(scope="session")
 def browser(browser_type, request):
