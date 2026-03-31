@@ -38,7 +38,7 @@ def pytest_addoption(parser):
     parser.addoption("--headless", action="store_true", default=False,
                      help="Run browser in headless mode (default: False).")
     parser.addoption("--browser", action="store", default="chromium",
-                     help="Set the browser type (default: chromium). 
+                     help="Set the browser type (default: chromium).\
                      Options: chromium, firefox, webkit.")
 
 @pytest.fixture(scope="session")

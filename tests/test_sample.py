@@ -12,4 +12,4 @@ class TestDemo:
         """
         sample test case
         """
-        pass
+        assert True
