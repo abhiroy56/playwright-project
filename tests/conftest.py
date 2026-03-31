@@ -82,7 +82,7 @@ def browser(browser_type, request):
     :yield: The browser instance.
     """
     headless = request.config.getoption("--headless")
-    browser_pw = browser_type.launch(headless=headless, 
+    browser_pw = browser_type.launch(headless=headless,
     args=["--start-maximized"])
     print("Starting browser...")
     yield browser_pw
