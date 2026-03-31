@@ -1,4 +1,4 @@
 qa:
   baseURL: "https://www.letcode.in/"
 dev:
-  baseURL: "https://www.google.co.in/"
+  baseURL: "https://dev.letcode.in/"
