@@ -3,7 +3,13 @@ Test Sample Module
 """
 from playwright.sync_api import Page
 
-class Test_Demo:
+class TestDemo:
+    """
+    Demo class
+    """
 
     def test_demo(self, page: Page):
-        page.go
+        """
+        sample test case
+        """
+        pass

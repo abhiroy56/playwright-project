@@ -38,7 +38,8 @@ def pytest_addoption(parser):
     parser.addoption("--headless", action="store_true", default=False,
                      help="Run browser in headless mode (default: False).")
     parser.addoption("--browser", action="store", default="chromium",
-                     help="Set the browser type (default: chromium). Options: chromium, firefox, webkit.")
+                     help="Set the browser type (default: chromium). 
+                     Options: chromium, firefox, webkit.")
 
 @pytest.fixture(scope="session")
 def playwright():
@@ -81,7 +82,8 @@ def browser(browser_type, request):
     :yield: The browser instance.
     """
     headless = request.config.getoption("--headless")
-    browser_pw = browser_type.launch(headless=headless, args=["--start-maximized"])
+    browser_pw = browser_type.launch(headless=headless, 
+    args=["--start-maximized"])
     print("Starting browser...")
     yield browser_pw
     browser_pw.close()
